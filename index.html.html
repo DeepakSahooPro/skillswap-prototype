@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillSwap — Learn. Teach. Grow.</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #10203F;
+    --navy-2: #16294E;
+    --navy-tint: #1F3766;
+    --parchment: #F6F1E4;
+    --parchment-2: #EEE6D2;
+    --gold: #B4892C;
+    --gold-bright: #D6A94B;
+    --ink: #1B1B18;
+    --rule: #CBB98A;
+    --rule-dark: rgba(246,241,228,0.25);
+    --maroon: #6E2A2A;
+    --green: #3F5D3A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--parchment);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{ font-family:'Source Serif 4', serif; }
+  a{color:inherit;}
+
+  /* ---------- Masthead ---------- */
+  .masthead{
+    background:var(--navy);
+    color:var(--parchment);
+    padding:22px 28px 0;
+  }
+  .masthead-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    max-width:1040px;
+    margin:0 auto;
+    border-bottom:1px solid var(--rule-dark);
+    padding-bottom:14px;
+  }
+  .masthead-title{
+    font-size:2.4rem;
+    font-weight:700;
+    letter-spacing:0.5px;
+    margin:0;
+  }
+  .masthead-title span{ color:var(--gold-bright); }
+  .masthead-date{
+    font-size:0.78rem;
+    color:var(--parchment-2);
+    opacity:0.7;
+    text-align:right;
+    line-height:1.5;
+  }
+  nav.tabs{
+    max-width:1040px;
+    margin:0 auto;
+    display:flex;
+    gap:2px;
+    overflow-x:auto;
+  }
+  nav.tabs button{
+    background:none;
+    border:none;
+    color:var(--parchment-2);
+    font-family:'Work Sans', sans-serif;
+    font-size:0.85rem;
+    font-weight:500;
+    padding:14px 16px 12px;
+    cursor:pointer;
+    white-space:nowrap;
+    border-bottom:3px solid transparent;
+    opacity:0.65;
+    transition:opacity .15s, border-color .15s;
+  }
+  nav.tabs button:hover{ opacity:0.9; }
+  nav.tabs button.active{
+    opacity:1;
+    border-bottom:3px solid var(--gold-bright);
+    color:#fff;
+  }
+
+  /* ---------- Layout ---------- */
+  main{
+    max-width:1040px;
+    margin:0 auto;
+    padding:40px 28px 90px;
+  }
+  .page{ display:none; }
+  .page.active{ display:block; animation:fade .35s ease; }
+  @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .eyebrow-rule{
+    border:none;
+    border-top:1px solid var(--rule);
+    margin:0 0 28px;
+  }
+
+  /* ---------- Landing ---------- */
+  .hero{
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    gap:48px;
+    align-items:center;
+    padding-bottom:36px;
+    border-bottom:1px solid var(--rule);
+  }
+  .hero h1{
+    font-size:2.6rem;
+    line-height:1.15;
+    margin:0 0 16px;
+  }
+  .hero p.lede{
+    font-size:1.08rem;
+    line-height:1.6;
+    color:#3a3a35;
+    max-width:46ch;
+    margin:0 0 26px;
+  }
+  .btn-row{ display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    font-family:'Work Sans',sans-serif;
+    font-weight:600;
+    font-size:0.92rem;
+    padding:13px 24px;
+    border-radius:2px;
+    cursor:pointer;
+    border:1px solid transparent;
+    transition:transform .12s, box-shadow .12s;
+  }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn-primary{ background:var(--navy); color:var(--parchment); }
+  .btn-primary:hover{ box-shadow:0 4px 0 var(--gold); }
+  .btn-outline{ background:transparent; color:var(--navy); border:1px solid var(--navy); }
+  .btn-outline:hover{ background:var(--navy); color:var(--parchment); }
+  .btn-gold{ background:var(--gold); color:var(--navy); }
+  .btn-gold:hover{ box-shadow:0 4px 0 var(--navy-2); }
+
+  .hero-panel{
+    background:var(--navy);
+    color:var(--parchment);
+    padding:26px 24px;
+    position:relative;
+  }
+  .hero-panel::before{
+    content:"";
+    position:absolute; inset:6px;
+    border:1px solid var(--rule-dark);
+    pointer-events:none;
+  }
+  .hero-panel .stat{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:10px 0;
+    border-bottom:1px solid var(--rule-dark);
+    font-size:0.85rem;
+  }
+  .hero-panel .stat:last-child{ border-bottom:none; }
+  .hero-panel .stat b{
+    font-family:'Source Serif 4', serif;
+    font-size:1.5rem;
+    color:var(--gold-bright);
+    font-weight:600;
+  }
+  .demo-note{
+    font-size:0.72rem;
+    color:var(--parchment-2);
+    opacity:0.6;
+    margin-top:12px;
+    font-style:italic;
+  }
+
+  .section-label{
+    text-transform:none;
+    font-size:0.78rem;
+    color:var(--maroon);
+    font-weight:600;
+    margin:0 0 6px;
+    letter-spacing:0.2px;
+  }
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-bottom:22px;
+  }
+  .section-head h2{ font-size:1.6rem; margin:0; }
+
+  .how-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:0;
+    margin-top:40px;
+    border-top:1px solid var(--rule);
+    border-left:1px solid var(--rule);
+  }
+  .how-cell{
+    padding:22px 18px;
+    border-right:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+  }
+  .how-cell .num{
+    font-family:'Source Serif 4', serif;
+    color:var(--gold);
+    font-size:1.1rem;
+    margin-bottom:8px;
+  }
+  .how-cell h3{ font-size:1rem; margin:0 0 6px; }
+  .how-cell p{ font-size:0.85rem; color:#4a4a44; margin:0; line-height:1.5; }
+
+  /* ---------- Forms ---------- */
+  .card{
+    background:#fff;
+    border:1px solid var(--rule);
+    padding:28px;
+  }
+  .field{ margin-bottom:20px; }
+  .field label{
+    display:block;
+    font-size:0.8rem;
+    font-weight:600;
+    color:var(--navy);
+    margin-bottom:6px;
+  }
+  .field input, .field select{
+    width:100%;
+    padding:11px 12px;
+    border:1px solid #c9c2ac;
+    background:var(--parchment);
+    font-family:'Work Sans',sans-serif;
+    font-size:0.92rem;
+    color:var(--ink);
+  }
+  .field input:focus, .field select:focus{
+    outline:2px solid var(--gold);
+    outline-offset:0;
+  }
+  .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .tag-input-wrap{
+    display:flex; flex-wrap:wrap; gap:8px;
+    border:1px solid #c9c2ac;
+    background:var(--parchment);
+    padding:10px;
+    min-height:48px;
+  }
+  .tag{
+    background:var(--navy);
+    color:var(--parchment);
+    font-size:0.78rem;
+    padding:5px 10px 5px 12px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .tag button{
+    background:none; border:none; color:var(--gold-bright);
+    cursor:pointer; font-size:0.85rem; padding:0;
+    line-height:1;
+  }
+  .tag-input-wrap input{
+    border:none; background:none; flex:1; min-width:120px;
+    padding:5px; font-size:0.85rem;
+  }
+  .tag-input-wrap input:focus{ outline:none; }
+  .radio-row{ display:flex; gap:22px; margin-top:4px; }
+  .radio-opt{ display:flex; align-items:center; gap:7px; font-size:0.88rem; }
+
+  /* ---------- Categories ---------- */
+  .cat-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--rule);
+    border:1px solid var(--rule);
+  }
+  .cat-card{
+    background:#fff;
+    padding:20px;
+    cursor:pointer;
+    transition:background .12s;
+  }
+  .cat-card:hover{ background:var(--parchment-2); }
+  .cat-card h3{
+    font-size:0.98rem;
+    margin:0 0 10px;
+    color:var(--navy);
+    border-bottom:1px solid var(--rule);
+    padding-bottom:8px;
+  }
+  .cat-card ul{ margin:0; padding:0; list-style:none; }
+  .cat-card li{
+    font-size:0.82rem;
+    color:#4a4a44;
+    padding:3px 0;
+  }
+  .cat-card li::before{ content:"— "; color:var(--gold); }
+
+  /* ---------- Matches ---------- */
+  .match-card{
+    display:grid;
+    grid-template-columns:64px 1fr auto;
+    gap:18px;
+    align-items:center;
+    background:#fff;
+    border:1px solid var(--rule);
+    padding:18px 20px;
+    margin-bottom:12px;
+  }
+  .avatar{
+    width:56px; height:56px;
+    background:var(--navy);
+    color:var(--gold-bright);
+    font-family:'Source Serif 4', serif;
+    font-size:1.3rem;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .match-name{ font-size:1.02rem; font-weight:600; margin:0 0 4px; }
+  .match-meta{ font-size:0.82rem; color:#5a5a52; line-height:1.5; }
+  .match-meta b{ color:var(--ink); }
+  .match-score{ text-align:right; }
+  .match-score .pct{
+    font-family:'Source Serif 4', serif;
+    font-size:1.3rem;
+    color:var(--green);
+    font-weight:600;
+  }
+  .match-score .lbl{ font-size:0.7rem; color:#888; text-transform:uppercase; letter-spacing:0.4px; }
+  .connect-btn{
+    display:block; margin-top:8px;
+    background:var(--gold); color:var(--navy);
+    border:none; padding:8px 16px;
+    font-size:0.78rem; font-weight:600;
+    cursor:pointer;
+  }
+  .connect-btn:disabled{ background:#d8cfa0; color:#7a7050; cursor:default; }
+
+  /* ---------- Credits / exchange ---------- */
+  .credit-hero{
+    background:var(--navy);
+    color:var(--parchment);
+    padding:30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:28px;
+  }
+  .credit-hero .amt{
+    font-family:'Source Serif 4', serif;
+    font-size:2.8rem;
+    color:var(--gold-bright);
+    font-weight:700;
+  }
+  .credit-hero .amt-label{ font-size:0.78rem; opacity:0.75; }
+  .flow-strip{
+    display:flex; align-items:center; gap:0;
+    margin:26px 0 30px;
+    flex-wrap:wrap;
+  }
+  .flow-step{
+    background:#fff; border:1px solid var(--rule);
+    padding:12px 16px; font-size:0.82rem;
+    white-space:nowrap;
+  }
+  .flow-arrow{ padding:0 10px; color:var(--gold); font-size:1rem; }
+  table.ledger{ width:100%; border-collapse:collapse; }
+  table.ledger th{
+    text-align:left; font-size:0.72rem; text-transform:uppercase;
+    letter-spacing:0.4px; color:#8a8272;
+    border-bottom:1px solid var(--rule); padding:8px 10px;
+    font-weight:600;
+  }
+  table.ledger td{
+    padding:11px 10px; font-size:0.86rem;
+    border-bottom:1px solid #ece5d2;
+  }
+  .credit-plus{ color:var(--green); font-weight:600; }
+  .credit-minus{ color:var(--maroon); font-weight:600; }
+
+  /* ---------- Dashboard ---------- */
+  .dash-grid{
+    display:grid;
+    grid-template-columns:1fr 1.4fr;
+    gap:28px;
+  }
+  .profile-card{
+    background:var(--navy); color:var(--parchment);
+    padding:26px;
+  }
+  .profile-card .pname{ font-family:'Source Serif 4', serif; font-size:1.5rem; margin:0 0 2px; }
+  .profile-card .pcollege{ font-size:0.82rem; opacity:0.7; margin-bottom:20px; }
+  .profile-card .plabel{ font-size:0.72rem; text-transform:uppercase; letter-spacing:0.4px; color:var(--gold-bright); margin:16px 0 8px; }
+  .pill{
+    display:inline-block; background:var(--navy-tint);
+    border:1px solid var(--rule-dark);
+    font-size:0.76rem; padding:4px 10px; margin:0 6px 6px 0;
+  }
+  .cert{
+    border:2px solid var(--gold);
+    padding:30px;
+    text-align:center;
+    background:#fffdf7;
+    position:relative;
+  }
+  .cert::before{
+    content:"";
+    position:absolute; inset:8px;
+    border:1px solid var(--rule);
+  }
+  .cert .cert-eyebrow{ font-size:0.72rem; letter-spacing:1px; color:var(--maroon); margin-bottom:14px; }
+  .cert h2{ font-size:1.4rem; margin:0 0 4px; }
+  .cert .cert-course{ font-family:'Source Serif 4', serif; font-style:italic; font-size:1.15rem; color:var(--navy); margin:14px 0; }
+  .cert .cert-sub{ font-size:0.82rem; color:#5a5a52; margin-bottom:22px; }
+  .cert .cert-sig{ font-size:0.75rem; color:#888; border-top:1px solid var(--rule); padding-top:12px; margin-top:22px; display:flex; justify-content:space-between; }
+
+  .toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--navy); color:var(--parchment);
+    padding:13px 22px; font-size:0.86rem;
+    border-left:3px solid var(--gold);
+    opacity:0; pointer-events:none;
+    transition:opacity .25s, transform .25s;
+    z-index:50;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  footer{
+    text-align:center; padding:26px; font-size:0.72rem;
+    color:#8a8272; border-top:1px solid var(--rule);
+  }
+
+  @media(max-width:720px){
+    .hero{ grid-template-columns:1fr; }
+    .how-grid{ grid-template-columns:repeat(2,1fr); }
+    .cat-grid{ grid-template-columns:1fr; }
+    .field-row{ grid-template-columns:1fr; }
+    .dash-grid{ grid-template-columns:1fr; }
+    .masthead-title{ font-size:1.8rem; }
+    .match-card{ grid-template-columns:48px 1fr; }
+    .match-score{ grid-column:1/-1; text-align:left; display:flex; align-items:center; gap:10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-top">
+    <h1 class="masthead-title">SKILL<span>SWAP</span></h1>
+    <div class="masthead-date">Prototype Edition · Vol. 1<br>Learn. Teach. Grow.</div>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button data-page="landing" class="active">Front Page</button>
+    <button data-page="profile">Create Profile</button>
+    <button data-page="explore">Find a Skill</button>
+    <button data-page="matches">Matches</button>
+    <button data-page="credits">Skill Credits</button>
+    <button data-page="dashboard">Dashboard</button>
+  </nav>
+</div>
+
+<main>
+
+  <!-- LANDING -->
+  <section class="page active" id="landing">
+    <div class="hero">
+      <div>
+        <p class="section-label">Peer-to-peer learning, for students</p>
+        <h1>Your skill.<br>Their skill.<br>Shared growth.</h1>
+        <p class="lede">You know Excel. Someone else knows Canva. Instead of buying another course, trade what you know for what you want to learn — no fees required.</p>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="goTo('explore')">Find a Skill</button>
+          <button class="btn btn-outline" onclick="goTo('profile')">Share Your Skill</button>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <div class="stat"><span>Students on SkillSwap</span><b>1,250+</b></div>
+        <div class="stat"><span>Skills listed</span><b>75+</b></div>
+        <div class="stat"><span>Skill exchanges completed</span><b>500+</b></div>
+        <p class="demo-note">Figures shown are illustrative demo data for this prototype.</p>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-top:44px;">
+      <div>
+        <p class="section-label">How it works</p>
+        <h2>From two skills to one exchange</h2>
+      </div>
+    </div>
+    <div class="how-grid">
+      <div class="how-cell">
+        <div class="num">I</div>
+        <h3>List your skills</h3>
+        <p>Add what you can teach and what you're hoping to learn.</p>
+      </div>
+      <div class="how-cell">
+        <div class="num">II</div>
+        <h3>Get matched</h3>
+        <p>The matching system finds students whose skills complete yours.</p>
+      </div>
+      <div class="how-cell">
+        <div class="num">III</div>
+        <h3>Teach and learn</h3>
+        <p>Meet online or offline, and trade an hour for an hour.</p>
+      </div>
+      <div class="how-cell">
+        <div class="num">IV</div>
+        <h3>Earn and grow</h3>
+        <p>Collect Skill Credits and certificates as your portfolio builds.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROFILE -->
+  <section class="page" id="profile">
+    <p class="section-label">Step one</p>
+    <h2 style="margin-top:0;">Create your profile</h2>
+    <hr class="eyebrow-rule">
+    <div class="card">
+      <div class="field-row">
+        <div class="field">
+          <label for="pf-name">Name</label>
+          <input id="pf-name" type="text" placeholder="e.g. Aarav Mehta" value="Aarav Mehta">
+        </div>
+        <div class="field">
+          <label for="pf-college">College</label>
+          <input id="pf-college" type="text" placeholder="e.g. Delhi School of Business" value="Delhi School of Business">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Skills I can teach</label>
+        <div class="tag-input-wrap" id="teach-wrap">
+          <input id="teach-input" type="text" placeholder="Type a skill and press Enter">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Skills I want to learn</label>
+        <div class="tag-input-wrap" id="learn-wrap">
+          <input id="learn-input" type="text" placeholder="Type a skill and press Enter">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Availability</label>
+          <div class="radio-row">
+            <label class="radio-opt"><input type="radio" name="avail" checked> Weekdays</label>
+            <label class="radio-opt"><input type="radio" name="avail"> Weekends</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Mode</label>
+          <div class="radio-row">
+            <label class="radio-opt"><input type="radio" name="mode" checked> Online</label>
+            <label class="radio-opt"><input type="radio" name="mode"> Offline</label>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-gold" onclick="saveProfile()">Save profile &amp; see my matches</button>
+    </div>
+  </section>
+
+  <!-- EXPLORE -->
+  <section class="page" id="explore">
+    <p class="section-label">Browse by category</p>
+    <h2 style="margin-top:0;">Find a skill</h2>
+    <hr class="eyebrow-rule">
+    <div class="cat-grid">
+      <div class="cat-card" onclick="goTo('matches')">
+        <h3>Business</h3>
+        <ul><li>Excel</li><li>Finance</li><li>Marketing</li><li>Entrepreneurship</li></ul>
+      </div>
+      <div class="cat-card" onclick="goTo('matches')">
+        <h3>Technology</h3>
+        <ul><li>Coding</li><li>AI tools</li><li>Data Analytics</li></ul>
+      </div>
+      <div class="cat-card" onclick="goTo('matches')">
+        <h3>Creative</h3>
+        <ul><li>Canva</li><li>Photoshop</li><li>Video Editing</li><li>Photography</li></ul>
+      </div>
+      <div class="cat-card" onclick="goTo('matches')">
+        <h3>Communication</h3>
+        <ul><li>Public Speaking</li><li>Presentation</li><li>Interview Skills</li></ul>
+      </div>
+      <div class="cat-card" onclick="goTo('matches')">
+        <h3>Languages</h3>
+        <ul><li>English</li><li>Hindi</li><li>Tamil</li></ul>
+      </div>
+      <div class="cat-card" onclick="goTo('matches')">
+        <h3>Try the AI matcher</h3>
+        <ul><li>Tell it your career goal</li><li>Get a suggested skill path</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- MATCHES -->
+  <section class="page" id="matches">
+    <div class="section-head">
+      <div>
+        <p class="section-label">Showing results for "Excel"</p>
+        <h2 style="margin:0;">Recommended matches</h2>
+      </div>
+    </div>
+    <div id="match-list"></div>
+  </section>
+
+  <!-- CREDITS -->
+  <section class="page" id="credits">
+    <p class="section-label">Your balance</p>
+    <h2 style="margin-top:0;">Skill Credits</h2>
+    <hr class="eyebrow-rule">
+
+    <div class="credit-hero">
+      <div>
+        <div class="amt-label">Available credits</div>
+        <div class="amt" id="credit-balance">3</div>
+      </div>
+      <button class="btn btn-gold" onclick="goTo('explore')">Spend a credit</button>
+    </div>
+
+    <p class="section-label">How credits move</p>
+    <div class="flow-strip">
+      <div class="flow-step">Teach 1 hour</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Earn 1 credit</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Spend on a lesson</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Learn 1 hour</div>
+    </div>
+
+    <p class="section-label">Recent activity</p>
+    <table class="ledger">
+      <thead><tr><th>Date</th><th>Activity</th><th>With</th><th>Credits</th></tr></thead>
+      <tbody>
+        <tr><td>3 Sep</td><td>Taught Excel Basics</td><td>Diya</td><td class="credit-plus">+2</td></tr>
+        <tr><td>7 Sep</td><td>Learned Canva Fundamentals</td><td>Diya</td><td class="credit-minus">−1</td></tr>
+        <tr><td>10 Sep</td><td>Taught PowerPoint Design</td><td>Arjun</td><td class="credit-plus">+2</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section class="page" id="dashboard">
+    <p class="section-label">Your account</p>
+    <h2 style="margin-top:0;">Dashboard</h2>
+    <hr class="eyebrow-rule">
+    <div class="dash-grid">
+      <div class="profile-card">
+        <div class="pname" id="dash-name">Aarav Mehta</div>
+        <div class="pcollege" id="dash-college">Delhi School of Business</div>
+
+        <div class="plabel">Teaches</div>
+        <div id="dash-teach"><span class="pill">Excel</span><span class="pill">PowerPoint</span></div>
+
+        <div class="plabel">Wants to learn</div>
+        <div id="dash-learn"><span class="pill">Video Editing</span></div>
+
+        <div class="plabel">Rating</div>
+        <div style="font-family:'Source Serif 4',serif; color:var(--gold-bright); font-size:1.2rem;">★ 4.8</div>
+      </div>
+
+      <div class="cert">
+        <div class="cert-eyebrow">CERTIFICATE OF SKILL EXCHANGE</div>
+        <h2>This certifies that</h2>
+        <div class="cert-course" id="cert-name">Aarav Mehta</div>
+        <p class="cert-sub">completed the <b>Fundamentals of Excel</b> peer learning program — 5 hours, via SkillSwap</p>
+        <div class="cert-sig">
+          <span>SkillSwap</span>
+          <span id="cert-date">Issued Sept 2026</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>SkillSwap — clickable prototype for demonstration purposes. All names, stats and matches are sample data.</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+  // ---------- Navigation ----------
+  function goTo(pageId){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+    document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('active', b.dataset.page===pageId));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  document.querySelectorAll('#tabs button').forEach(btn=>{
+    btn.addEventListener('click', ()=>goTo(btn.dataset.page));
+  });
+
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 2200);
+  }
+
+  // ---------- Profile tags ----------
+  function setupTagInput(inputId, wrapId, initial){
+    const input = document.getElementById(inputId);
+    const wrap = document.getElementById(wrapId);
+    const tags = [...initial];
+
+    function render(){
+      wrap.querySelectorAll('.tag').forEach(t=>t.remove());
+      tags.forEach((tag,i)=>{
+        const el = document.createElement('span');
+        el.className = 'tag';
+        el.innerHTML = tag + ' <button aria-label="Remove">&times;</button>';
+        el.querySelector('button').onclick = ()=>{ tags.splice(i,1); render(); };
+        wrap.insertBefore(el, input);
+      });
+      window[inputId+'_tags'] = tags;
+    }
+    input.addEventListener('keydown', e=>{
+      if(e.key==='Enter' && input.value.trim()){
+        e.preventDefault();
+        tags.push(input.value.trim());
+        input.value='';
+        render();
+      }
+    });
+    render();
+  }
+  setupTagInput('teach-input','teach-wrap',['Excel','PowerPoint']);
+  setupTagInput('learn-input','learn-wrap',['Video Editing']);
+
+  function saveProfile(){
+    const name = document.getElementById('pf-name').value || 'Your name';
+    const college = document.getElementById('pf-college').value || 'Your college';
+    document.getElementById('dash-name').textContent = name;
+    document.getElementById('dash-college').textContent = college;
+    document.getElementById('cert-name').textContent = name;
+
+    const teach = window['teach-input_tags'] || [];
+    const learn = window['learn-input_tags'] || [];
+    document.getElementById('dash-teach').innerHTML = teach.map(t=>`<span class="pill">${t}</span>`).join('') || '<span class="pill">—</span>';
+    document.getElementById('dash-learn').innerHTML = learn.map(t=>`<span class="pill">${t}</span>`).join('') || '<span class="pill">—</span>';
+
+    showToast('Profile saved — here are your matches');
+    setTimeout(()=>goTo('matches'), 500);
+  }
+
+  // ---------- Matches ----------
+  const MATCHES = [
+    {name:'Rahul Sharma', initials:'RS', pct:92, teaches:'Advanced Excel', wants:'Canva', avail:'Saturdays', rating:'4.8'},
+    {name:'Priya Nair', initials:'PN', pct:87, teaches:'Excel for Finance', wants:'Public Speaking', avail:'Weekday evenings', rating:'4.9'},
+    {name:'Karan Bose', initials:'KB', pct:81, teaches:'Excel Macros & VBA', wants:'Video Editing', avail:'Sundays', rating:'4.6'},
+  ];
+  function renderMatches(){
+    const list = document.getElementById('match-list');
+    list.innerHTML = MATCHES.map((m,i)=>`
+      <div class="match-card">
+        <div class="avatar">${m.initials}</div>
+        <div>
+          <p class="match-name">${m.name}</p>
+          <p class="match-meta">Teaches <b>${m.teaches}</b> · Wants to learn <b>${m.wants}</b><br>Available ${m.avail} · ★ ${m.rating} rating</p>
+        </div>
+        <div class="match-score">
+          <div class="pct">${m.pct}%</div>
+          <div class="lbl">Match</div>
+          <button class="connect-btn" id="connect-${i}" onclick="connect(${i})">Connect</button>
+        </div>
+      </div>
+    `).join('');
+  }
+  renderMatches();
+
+  let credits = 3;
+  function connect(i){
+    const btn = document.getElementById('connect-'+i);
+    btn.textContent = 'Requested ✓';
+    btn.disabled = true;
+    showToast(`Request sent to ${MATCHES[i].name}`);
+  }
+</script>
+</body>
+</html>
